@@ -51,19 +51,26 @@ public class TransactionJob {
                 continue;
             }
             for (Object transaction : transactionList) {
-                TransactionDTO transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
-                if (Objects.nonNull(transactionDTO)) {
-                    saveTransaction(transactionDTO);
-                    dealRpcReturnData(transactionDTO);
+                TransactionDTO transactionDTO = null;
+                try {
+                    transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
+                    if (Objects.nonNull(transactionDTO)) {
+                        saveTransaction(transactionDTO);
+                        dealRpcReturnData(transactionDTO);
+                    }
+                } catch (Exception e) {
+                    log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
+                    continue;
                 }
             }
+            config.headerBlockCount++;
         }
-        config.headerBlockCount = headerBlockCount;
         log.info("doTransactionJob|结束|nowHeaderBlockNum={}", config.headerBlockCount);
     }
 
     /**
      * 扫块数据入库
+     *
      * @param transactionDTO 数据
      */
     private void saveTransaction(TransactionDTO transactionDTO) {
@@ -77,6 +84,7 @@ public class TransactionJob {
 
     /**
      * 处理加密狗rpc方法调用返回的原始数据
+     *
      * @param transactionDTO 原始数据dto
      */
     private void dealRpcReturnData(TransactionDTO transactionDTO) {
