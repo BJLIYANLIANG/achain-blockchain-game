@@ -32,6 +32,4 @@ public class BlockchainDogInfo implements Serializable{
     private Date createTime;
     private Date updateTime;
     private String trxId;
-
-
 }
