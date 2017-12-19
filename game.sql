@@ -12,8 +12,8 @@ CREATE TABLE `blockchain_record` (
   COMMENT '交易时间',
   `create_time` TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`block_num`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
