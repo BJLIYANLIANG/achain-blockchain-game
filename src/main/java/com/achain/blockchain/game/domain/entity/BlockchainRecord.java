@@ -33,5 +33,17 @@ public class BlockchainRecord extends OrderBase implements Serializable {
      */
     private Date trxTime;
 
+    private Integer id;
+    /**
+     * 交易id
+     */
+    private String trxId;
+    /**
+     * 订单状态,0-进行中,1-交易成功,2-交易取消,3-交易失效
+     */
+    private Integer status;
+    private Date createTime;
+    private Date updateTime;
+
 
 }
