@@ -46,25 +46,26 @@ public class TransactionJob {
             return;
         }
         for (long blockCount = config.headerBlockCount + 1; blockCount <= headerBlockCount; ++blockCount) {
-            JSONArray transactionList = blockchainService.getBlock(blockCount);
-            if (transactionList.isEmpty()) {
-                continue;
-            }
-            for (Object transaction : transactionList) {
-                TransactionDTO transactionDTO = null;
-                try {
+            TransactionDTO transactionDTO = null;
+            try {
+                JSONArray transactionList = blockchainService.getBlock(blockCount);
+                if (transactionList.isEmpty()) {
+                    continue;
+                }
+                for (Object transaction : transactionList) {
                     transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
                     if (Objects.nonNull(transactionDTO)) {
                         saveTransaction(transactionDTO);
                         dealRpcReturnData(transactionDTO);
                     }
-                } catch (Exception e) {
-                    log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
-                    continue;
+
                 }
+            } catch (Exception e) {
+                log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
+                continue;
             }
-            config.headerBlockCount++;
         }
+        config.headerBlockCount = headerBlockCount;
         log.info("doTransactionJob|结束|nowHeaderBlockNum={}", config.headerBlockCount);
     }
 
