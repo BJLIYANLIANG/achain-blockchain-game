@@ -2,7 +2,8 @@ package com.achain.blockchain.game.service;
 
 import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
 import com.achain.blockchain.game.utils.HttpUtils;
-import com.alibaba.fastjson.JSON;
+import com.ms.data.ACTPrivateKey;
+import com.ms.data.Transaction;
 
 /**
  * @author yujianjian
@@ -28,15 +29,29 @@ public class InterfaceTest {
     }
 
 
+    public String recharge() throws Exception{
+        Transaction trx = new Transaction(
+            new ACTPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF"),
+            "CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe",
+            10000L,
+            (long) (Double.parseDouble("5000") * 100000));
+        String a = trx.toJSONString();
+        System.out.println(a);
+        return a;
+    }
+
+
     public String offLineSign() throws Exception {
         String url = basicUrl + "offline/sign";
         OfflineSignDTO offlineSignDTO = new OfflineSignDTO();
-        offlineSignDTO.setParam("aa|bb");
-        offlineSignDTO.setMethod("grab");
-        offlineSignDTO.setContractId("fdaf");
-        offlineSignDTO.setPrivateKey("fdsafsdafas");
-        String result = HttpUtils.postJson(url, JSON.toJSONString(offlineSignDTO));
-        return result;
+        offlineSignDTO.setParam("1");
+        offlineSignDTO.setMethod("query_dog");
+        offlineSignDTO.setContractId("CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe");
+        offlineSignDTO.setPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF");
+//        String result = HttpUtils.postJson(url, JSON.toJSONString(offlineSignDTO));
+//        return result;
+        Transaction trx = new Transaction(new ACTPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF"), "CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe", "query_dog", "1", 5000L, true);
+        return trx.toJSONString();
     }
 
 

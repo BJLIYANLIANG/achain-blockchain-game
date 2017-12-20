@@ -55,10 +55,11 @@ public class TransactionJob {
                 for (Object transaction : transactionList) {
                     transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
                     if (Objects.nonNull(transactionDTO)) {
-                        saveTransaction(transactionDTO);
-                        dealRpcReturnData(transactionDTO);
+                        boolean success = saveTransaction(transactionDTO);
+                        if (success) {
+                            dealRpcReturnData(transactionDTO);
+                        }
                     }
-
                 }
             } catch (Exception e) {
                 log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
@@ -74,13 +75,19 @@ public class TransactionJob {
      *
      * @param transactionDTO 数据
      */
-    private void saveTransaction(TransactionDTO transactionDTO) {
-        BlockchainRecord blockchainRecord = new BlockchainRecord();
-        blockchainRecord.setTrxId(transactionDTO.getTrxId());
-        blockchainRecord.setTrxTime(transactionDTO.getTrxTime());
-        blockchainRecord.setContractId(transactionDTO.getContractId());
-        blockchainRecord.setBlockNum(transactionDTO.getBlockNum());
-        blockchainRecordService.insert(blockchainRecord);
+    private boolean saveTransaction(TransactionDTO transactionDTO) {
+        try {
+            BlockchainRecord blockchainRecord = new BlockchainRecord();
+            blockchainRecord.setTrxId(transactionDTO.getTrxId());
+            blockchainRecord.setTrxTime(transactionDTO.getTrxTime());
+            blockchainRecord.setContractId(transactionDTO.getContractId());
+            blockchainRecord.setBlockNum(transactionDTO.getBlockNum());
+            blockchainRecordService.insert(blockchainRecord);
+        } catch (Exception e) {
+            log.error("saveTransaction|error|", e);
+            return false;
+        }
+        return true;
     }
 
     /**

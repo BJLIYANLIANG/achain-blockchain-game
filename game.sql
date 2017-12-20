@@ -60,7 +60,7 @@ CREATE TABLE `blockchain_dog_order` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_trx_id`(`trx_id`),
+  UNIQUE KEY (`trx_id`),
   KEY `idx_dog_id`(`dog_id`),
   UNIQUE KEY (`order_id`)
   )
@@ -86,7 +86,7 @@ CREATE TABLE `blockchain_dog_meting_order` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_trx_id`(`trx_id`),
+  UNIQUE KEY (`trx_id`),
   KEY `idx_seller_dog_id`(`seller_dog_id`),
   KEY `idx_buyer_dog_id`(`buyer_dog_id`),
   UNIQUE KEY (`order_id`)
