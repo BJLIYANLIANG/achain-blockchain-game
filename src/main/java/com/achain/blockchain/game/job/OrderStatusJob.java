@@ -47,6 +47,6 @@ public class OrderStatusJob {
             log.info("orderJob|更新繁衍交易单子为失效|size={}",blockchainDogMetingOrders.size());
             blockchainDogMetingOrderService.updateBatchById(blockchainDogMetingOrders);
         }
-        log.info("orderJob|end|cost {} ms",System.currentTimeMillis() - currentTime.getTime());
+        log.info("orderJob|end|cost {} achain",System.currentTimeMillis() - currentTime.getTime());
     }
 }

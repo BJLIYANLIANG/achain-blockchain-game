@@ -17,7 +17,7 @@ public class InterfaceTest {
         InterfaceTest test = new InterfaceTest();
         //String result = test.getBalance();
         //String result = test.networkBroadcastTransaction();
-        String result = test.offLineSign();
+        String result = test.testOffLineSign();
         System.out.println(result);
     }
 
@@ -40,6 +40,15 @@ public class InterfaceTest {
         return a;
     }
 
+    private String testOffLineSign() throws Exception{
+        String param ="ZcDmzUKyEMeJ1WJtlMEIxiDJbaO5OrKg9rWgeB0VOhnrKfcU/SFAoMqy1nabwT/OfIR0U/NFv6hmP" +
+                      "/QONPzhlwOHhIqkBHIatuE7GkgOtEkB2W3DmMkDOPZk96TDVVUTz46AM1mrvXkeqaF5IZlu2qzrCCL264BWIGsWdHjWEUbk\n" +
+                      "Va5hpzzEDC6cEf5oyktWQojbRXv4PmcXA6Z+ejMLWVdqEBHxEZQTIUW/idAAMSU=|true|2.3|1.2|2000|1513775070004";
+
+        Transaction trx = new Transaction(new ACTPrivateKey("5JiB57vDbcXC6tzs9rxowwwysTf75z7Th9NPGTzh5GF2QYQwte4"), "CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe", "generate_zero_dog", param, 5000L, true);
+        return trx.toJSONString();
+    }
+
 
     public String offLineSign() throws Exception {
         String url = basicUrl + "offline/sign";
@@ -50,7 +59,7 @@ public class InterfaceTest {
         offlineSignDTO.setPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF");
 //        String result = HttpUtils.postJson(url, JSON.toJSONString(offlineSignDTO));
 //        return result;
-        Transaction trx = new Transaction(new ACTPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF"), "CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe", "query_dog", "1", 5000L, true);
+        Transaction trx = new Transaction(new ACTPrivateKey("5JfdeAZaormibWETNUk3uxYpKZ6yxuY6vGYzP4aTZ9T4LU1yuiF"), "CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe", "generate_zero_dog", "1", 5000L, true);
         return trx.toJSONString();
     }
 
