@@ -102,4 +102,10 @@ public interface ICryptoDogService {
      * @param transactionDTO 原始数据
      */
     void recharge(TransactionDTO transactionDTO);
+
+    /**
+     * 用户退款方法
+     * @param transactionDTO 原始数据
+     */
+    void withdrawBalance(TransactionDTO transactionDTO);
 }

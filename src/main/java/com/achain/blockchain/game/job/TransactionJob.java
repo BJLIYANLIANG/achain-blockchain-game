@@ -146,6 +146,9 @@ public class TransactionJob {
             case BREEDING:
                 cryptoDogService.breeding(transactionDTO);
                 break;
+            case WITHDRAW_BALANCE:
+                cryptoDogService.withdrawBalance(transactionDTO);
+                break;
             default:
                 log.error("dealRpcReturnData|没有符合的合约方法|method={}|transactionDTO={}", method, transactionDTO);
                 break;

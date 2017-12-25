@@ -24,7 +24,8 @@ public enum ContractGameMethod {
     CHANGE_FEE(11,"change_fee","更改费率的方法"),
     WITHDRAW_BENEFIT(12,"withdraw_benefit","提现方法"),
     GIFT(13,"gift","送狗方法"),
-    RECHARGE(14,"recharge","合约充值行为");
+    RECHARGE(14,"recharge","合约充值行为"),
+    WITHDRAW_BALANCE(15,"withdraw_balance","用户退款");
 
 
     private final int key;

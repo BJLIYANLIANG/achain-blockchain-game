@@ -430,6 +430,19 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         blockchainDogUserOrderService.updateRecharge(userOrderDTO);
     }
 
+
+    @Override
+    public void withdrawBalance(TransactionDTO transactionDTO) {
+        log.info("withdrawBalance|transactionDTO={}", transactionDTO);
+        String eventType = transactionDTO.getEventType();
+        String eventParam = transactionDTO.getEventParam();
+        UserOrderDTO userOrderDTO = getUserOrderDTO(transactionDTO.getTrxId(), OrderStatus.FAIL, ContractGameMethod.WITHDRAW_BALANCE, eventParam);
+        if (CryptoDogEventType.WITHDRAW_BALANCE_SUCCESS.equals(eventType)) {
+            userOrderDTO.setStatus(OrderStatus.SUCCESS);
+        }
+        blockchainDogUserOrderService.updateRecharge(userOrderDTO);
+    }
+
     private UserOrderDTO getUserOrderDTO(String trxId, OrderStatus orderStatus, ContractGameMethod contractGameMethod,
                                          String message) {
         return UserOrderDTO.builder()

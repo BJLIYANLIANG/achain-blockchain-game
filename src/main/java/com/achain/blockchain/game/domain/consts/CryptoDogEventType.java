@@ -61,4 +61,7 @@ public class CryptoDogEventType {
     public static final String BREEDING_SUCCESS = "breeding_success";
 
     public static final String BREEDING_FAIL = "breeding_fail";
+
+    public static final String WITHDRAW_BALANCE_SUCCESS = "withdraw_balance_success";
+
 }
