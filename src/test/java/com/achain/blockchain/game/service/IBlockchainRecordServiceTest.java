@@ -61,10 +61,10 @@ public class IBlockchainRecordServiceTest {
         String url = "http://172.16.33.16:18888/rpc";
         String user = "admin:123456";
         JSONArray jsonArray = new JSONArray();
-        jsonArray.add("CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe");
+        jsonArray.add("CONBGzSXPfG3ddgzvv3vsf5jqTWqhgRTRrxW");
         jsonArray.add("wallet01");
         jsonArray.add("query_balance");
-        jsonArray.add("");
+        jsonArray.add("ACTBk37yzeFcJLqWG4s5Bp9WJqMMLhYvYHop");
         String data = httpClient.post(url, user, "call_contract_local_emit", jsonArray);
         System.out.println(data);
     }

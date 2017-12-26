@@ -494,7 +494,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         blockchainDogInfo.setDogId(dogDTO.getId());
         blockchainDogInfo.setOwner(dogDTO.getOwner());
         blockchainDogInfo.setGene(gene);
-        blockchainDogInfo.setBirthTime(DateUtils.getTimeoneEight(new Date(dogDTO.getBirth_time())));
+        blockchainDogInfo.setBirthTime(new Date(dogDTO.getBirth_time()));
         blockchainDogInfo.setCooldownEndTime(DateUtils.getTimeoneEight(new Date(coolDown)));
         blockchainDogInfo.setMotherId(dogDTO.getMother_id());
         blockchainDogInfo.setFatherId(dogDTO.getFather_id());
