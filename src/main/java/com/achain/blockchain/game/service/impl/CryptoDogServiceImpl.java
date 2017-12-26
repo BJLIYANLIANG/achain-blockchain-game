@@ -440,7 +440,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         if (CryptoDogEventType.WITHDRAW_BALANCE_SUCCESS.equals(eventType)) {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
-        blockchainDogUserOrderService.updateRecharge(userOrderDTO);
+        blockchainDogUserOrderService.updateTrx(userOrderDTO);
     }
 
     private UserOrderDTO getUserOrderDTO(String trxId, OrderStatus orderStatus, ContractGameMethod contractGameMethod,
