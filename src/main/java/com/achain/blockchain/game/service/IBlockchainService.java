@@ -4,6 +4,7 @@ import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
 import com.achain.blockchain.game.domain.dto.TransactionDTO;
 import com.alibaba.fastjson.JSONArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +60,12 @@ public interface IBlockchainService {
     long getBalance(String actAddress);
 
     Map<String,String> offLineRechargeSign(OfflineSignDTO offlineSignDTO);
+
+    /**
+     * 通过查询方法
+     * @param list 参数列表为空传空的
+     */
+    String commonQuery(List<String> list);
 
 
 }

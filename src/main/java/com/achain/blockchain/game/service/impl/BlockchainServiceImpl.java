@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -244,6 +245,13 @@ public class BlockchainServiceImpl implements IBlockchainService {
         map.put("msg", errorMsg);
         map.put("code", "202");
         return map;
+    }
+
+    @Override
+    public String commonQuery(List<String> list) {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.addAll(list);
+        return httpClient.post(config.walletUrl, config.rpcUser, "call_contract_local_emit", jsonArray);
     }
 
     private void parseEventData(JSONObject result, JSONArray jsonArray1) {

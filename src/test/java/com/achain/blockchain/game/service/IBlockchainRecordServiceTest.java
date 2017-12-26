@@ -2,6 +2,8 @@ package com.achain.blockchain.game.service;
 
 import com.achain.blockchain.game.conf.Config;
 import com.achain.blockchain.game.domain.entity.BlockchainRecord;
+import com.achain.blockchain.game.utils.SDKHttpClient;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 
 import org.junit.Assert;
@@ -22,6 +24,8 @@ public class IBlockchainRecordServiceTest {
     private IBlockchainRecordService blockchainService;
     @Autowired
     private Config config;
+    @Autowired
+    private SDKHttpClient httpClient;
 
     @Test
     public void insert() throws Exception {
@@ -49,5 +53,19 @@ public class IBlockchainRecordServiceTest {
         BlockchainRecord blockchainRecord = blockchainService.selectOne(wrapper);
         String walletUrl = config.walletUrl;
         System.out.println(23123);
+    }
+
+
+    @Test
+    public void testRpc() throws Exception{
+        String url = "http://172.16.33.16:18888/rpc";
+        String user = "admin:123456";
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add("CON5svUGc6WGzy1oAGbZy4m5fPteax21DdCe");
+        jsonArray.add("wallet01");
+        jsonArray.add("query_balance");
+        jsonArray.add("");
+        String data = httpClient.post(url, user, "call_contract_local_emit", jsonArray);
+        System.out.println(data);
     }
 }

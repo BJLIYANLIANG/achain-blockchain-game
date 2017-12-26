@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,5 +82,16 @@ public class BroadcastController {
             return 0L;
         }
         return blockchainService.getBalance(actAddress);
+    }
+
+    /**
+     * 通用查询接口
+     * @param list 查询参数,无参数传空列表
+     * @return 查询结果
+     */
+    @PostMapping("query")
+    public String query(@RequestBody List<String> list){
+        log.info("query|list={}",list);
+        return blockchainService.commonQuery(list);
     }
 }
