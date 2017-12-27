@@ -86,6 +86,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("generateZeroDog|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
 
@@ -122,6 +123,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("bid|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -155,6 +157,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("addAuction|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
 
@@ -183,6 +186,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("cancelAuction|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -202,12 +206,11 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
                 BlockchainDogInfo dogInfo = blockchainDogInfoService.getByDogId(dogDTO.getId());
                 dogInfo.setOwner(newOwner);
                 blockchainDogInfoService.updateById(dogInfo);
-
-                userOrderDTO.setMessage(null);
                 userOrderDTO.setStatus(OrderStatus.SUCCESS);
             }
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("gift|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -242,6 +245,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             }
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("addMatingTransaction|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -266,6 +270,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("cancelMatingTransaction|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -316,6 +321,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("matingTransfer|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
 
@@ -330,6 +336,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("changeFee|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -343,6 +350,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("withdrawBenefit|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -356,6 +364,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("queryDog|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -369,6 +378,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("changeCFO|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Override
@@ -382,6 +392,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("changeCOO|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -420,6 +431,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setMessage(null);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("breeding|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
 
@@ -428,6 +440,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         log.info("recharge|transactionDTO={}", transactionDTO);
         UserOrderDTO userOrderDTO = getUserOrderDTO(transactionDTO.getTrxId(), OrderStatus.SUCCESS, ContractGameMethod.RECHARGE, null);
         blockchainDogUserOrderService.updateRecharge(userOrderDTO);
+        log.info("recharge|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
 
@@ -441,6 +454,7 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
         blockchainDogUserOrderService.updateTrx(userOrderDTO);
+        log.info("withdrawBalance|updateSuccess|userOrderDTO={}", userOrderDTO);
     }
 
     private UserOrderDTO getUserOrderDTO(String trxId, OrderStatus orderStatus, ContractGameMethod contractGameMethod,
