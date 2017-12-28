@@ -81,12 +81,6 @@ public class BlockchainServiceImpl implements IBlockchainService {
                                                       .getJSONObject("trx")
                                                       .getJSONArray("operations")
                                                       .getJSONObject(0);
-            //判断交易类型
-            String operationType = operationJson.getString("type");
-            //不是合约调用就忽略
-//            if (!"transaction_op_type".equals(operationType) && !"transfer_contract_op_type".equals(operationType)) {
-//                return null;
-//            }
 
             JSONObject operationData = operationJson.getJSONObject("data");
             log.info("BlockchainServiceImpl|operationData={}", operationData);
@@ -95,14 +89,15 @@ public class BlockchainServiceImpl implements IBlockchainService {
                 resultJsonArray.getJSONObject(1).getJSONObject("trx").getString("result_trx_id");
             JSONArray jsonArray = new JSONArray();
             jsonArray.add(StringUtils.isEmpty(resultTrxId) ? trxId : resultTrxId);
-            log.info("getTransaction|transaction_op_type|[blockId={}][trxId={}][result_trx_id={}]", blockNum, trxId,
-                     resultTrxId);
+            log.info("getTransaction|transaction_op_type|[blockNum={}][trxId={}][result_trx_id={}]", blockNum, trxId, resultTrxId);
             String resultSignee = httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_pretty_contract_transaction", jsonArray);
             if(StringUtils.isEmpty(resultSignee)){
+                log.info("getTransaction|resultSigneeIsnull|blockNum={}|trxId={}",blockNum,trxId);
                 return null;
             }
             JSONObject resultJson2 = JSONObject.parseObject(resultSignee).getJSONObject("result");
             if(Objects.isNull(resultJson2)){
+                log.info("getTransaction|resultJson2Isnull|blockNum={}|trxId={}",blockNum,trxId);
                 return null;
             }
             //和广播返回的统一
