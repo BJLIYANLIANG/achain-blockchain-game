@@ -97,8 +97,10 @@ public class BlockchainServiceImpl implements IBlockchainService {
             jsonArray.add(StringUtils.isEmpty(resultTrxId) ? trxId : resultTrxId);
             log.info("getTransaction|transaction_op_type|[blockId={}][trxId={}][result_trx_id={}]", blockNum, trxId,
                      resultTrxId);
-            String resultSignee =
-                httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_pretty_contract_transaction", jsonArray);
+            String resultSignee = httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_pretty_contract_transaction", jsonArray);
+            if(StringUtils.isEmpty(resultSignee)){
+                return null;
+            }
             JSONObject resultJson2 = JSONObject.parseObject(resultSignee).getJSONObject("result");
             //和广播返回的统一
             String origTrxId = resultJson2.getString("orig_trx_id");
