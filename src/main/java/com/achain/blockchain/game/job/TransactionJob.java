@@ -55,12 +55,14 @@ public class TransactionJob {
                 for (Object transaction : transactionList) {
                     transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
                     if (Objects.nonNull(transactionDTO)) {
+                        //TODO 存储的块交易 状态为0
                         boolean success = saveTransaction(transactionDTO);
                         if (success) {
                             dealRpcReturnData(transactionDTO);
                         }
                     }
                 }
+                //TODO 到这一个块完整结束 按块号更新状态为1
             } catch (Exception e) {
                 log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
                 continue;
