@@ -102,6 +102,9 @@ public class BlockchainServiceImpl implements IBlockchainService {
                 return null;
             }
             JSONObject resultJson2 = JSONObject.parseObject(resultSignee).getJSONObject("result");
+            if(Objects.isNull(resultJson2)){
+                return null;
+            }
             //和广播返回的统一
             String origTrxId = resultJson2.getString("orig_trx_id");
             Integer trxType = Integer.parseInt(resultJson2.getString("trx_type"));
