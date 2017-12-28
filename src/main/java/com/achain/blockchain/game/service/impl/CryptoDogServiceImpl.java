@@ -110,10 +110,12 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
             if (list.size() == 0) {
                 return;
             }
+            String[] split = transactionDTO.getApiParams().split("\\|");
             BlockchainDogOrder blockchainDogOrder = list.get(0);
             blockchainDogOrder.setStatus(OrderStatus.SUCCESS.getIntKey());
             blockchainDogOrder.setBuyer(transactionDTO.getFromAddr());
-            blockchainDogOrder.setTransPrice(transactionDTO.getAmount());
+            blockchainDogOrder.setTransPrice((long)(Double.parseDouble(split[2]) * 100_000));
+            blockchainDogOrder.setUpdateTime(new Date());
             blockchainDogOrderService.updateById(blockchainDogOrder);
             BlockchainDogInfo dogInfo = blockchainDogInfoService.getByDogId(dogDTO.getId());
             dogInfo.setOwner(blockchainDogOrder.getBuyer());
