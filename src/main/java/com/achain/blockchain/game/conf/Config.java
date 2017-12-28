@@ -55,7 +55,6 @@ public class Config {
 
     @PostConstruct
     public void getHeaderBlockCount() {
-        //TODO 加条件status=1的
         EntityWrapper<BlockchainRecord> wrapper = new EntityWrapper<>();
         wrapper.orderBy("block_num", false);
         BlockchainRecord blockchainRecord = blockchainRecordService.selectOne(wrapper);
