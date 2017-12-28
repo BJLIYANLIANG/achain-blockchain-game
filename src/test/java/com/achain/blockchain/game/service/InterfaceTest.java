@@ -2,8 +2,9 @@ package com.achain.blockchain.game.service;
 
 import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
 import com.achain.blockchain.game.utils.HttpUtils;
-import com.ms.data.ACTPrivateKey;
-import com.ms.data.Transaction;
+import com.achain.data.ACTPrivateKey;
+import com.achain.data.Transaction;
+
 
 /**
  * @author yujianjian

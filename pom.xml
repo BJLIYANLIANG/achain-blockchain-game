@@ -154,9 +154,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.ms</groupId>
-      <artifactId>Achain-trs-server</artifactId>
-      <version>0.0.1-test</version>
+      <groupId>com.chain</groupId>
+      <artifactId>Achain-trs-off-line-server</artifactId>
+      <version>0.0.1</version>
     </dependency>
 
   </dependencies>

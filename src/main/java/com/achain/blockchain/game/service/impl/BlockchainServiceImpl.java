@@ -84,9 +84,9 @@ public class BlockchainServiceImpl implements IBlockchainService {
             //判断交易类型
             String operationType = operationJson.getString("type");
             //不是合约调用就忽略
-            if (!"transaction_op_type".equals(operationType)) {
-                return null;
-            }
+//            if (!"transaction_op_type".equals(operationType) && !"transfer_contract_op_type".equals(operationType)) {
+//                return null;
+//            }
 
             JSONObject operationData = operationJson.getJSONObject("data");
             log.info("BlockchainServiceImpl|operationData={}", operationData);
