@@ -45,7 +45,9 @@ public class TransactionJob {
             log.info("doTransactionJob|最大块号为[{}],不需要进行扫块", headerBlockCount);
             return;
         }
-        for (long blockCount = config.headerBlockCount + 1; blockCount <= headerBlockCount; ++blockCount) {
+
+        Long beginBlockNum = getBeginBlockNum(config.headerBlockCount);
+        for (long blockCount = beginBlockNum; blockCount <= headerBlockCount; ++blockCount) {
             TransactionDTO transactionDTO = null;
             try {
                 JSONArray transactionList = blockchainService.getBlock(blockCount);
@@ -68,6 +70,16 @@ public class TransactionJob {
         }
         config.headerBlockCount = headerBlockCount;
         log.info("doTransactionJob|结束|nowHeaderBlockNum={}", config.headerBlockCount);
+    }
+
+    private Long getBeginBlockNum(Long dbMaxBlockNum){
+        Integer trxNum = blockchainRecordService.countByBlockNum(dbMaxBlockNum);
+        JSONArray transactionList = blockchainService.getBlock(dbMaxBlockNum);
+        log.info("getBeginBlockNum|blockNum={}|dbTrxNum={}|realTrxNum={}",dbMaxBlockNum,trxNum,transactionList.size());
+        if (trxNum == transactionList.size()) {
+            return dbMaxBlockNum + 1;
+        }
+        return dbMaxBlockNum;
     }
 
     /**
