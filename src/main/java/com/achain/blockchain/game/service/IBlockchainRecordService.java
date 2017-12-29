@@ -9,5 +9,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IBlockchainRecordService extends IService<BlockchainRecord> {
 
+    Integer countByBlockNum(Long blockNum);
 
 }

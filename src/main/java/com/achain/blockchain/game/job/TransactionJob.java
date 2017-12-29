@@ -55,13 +55,7 @@ public class TransactionJob {
                     continue;
                 }
                 for (Object transaction : transactionList) {
-                    transactionDTO = blockchainService.getTransaction(blockCount, (String) transaction);
-                    if (Objects.nonNull(transactionDTO)) {
-                        boolean success = saveTransaction(transactionDTO);
-                        if (success) {
-                            dealRpcReturnData(transactionDTO);
-                        }
-                    }
+                    transactionDTO = getTransactionDTO(blockCount, (String) transaction);
                 }
             } catch (Exception e) {
                 log.error("doTransactionJob|foreach|blockNum={}|transactionDTO={}", blockCount, transactionDTO, e);
@@ -70,6 +64,18 @@ public class TransactionJob {
         }
         config.headerBlockCount = headerBlockCount;
         log.info("doTransactionJob|结束|nowHeaderBlockNum={}", config.headerBlockCount);
+    }
+
+    public TransactionDTO getTransactionDTO(long blockCount, String transaction) {
+        TransactionDTO transactionDTO;
+        transactionDTO = blockchainService.getTransaction(blockCount, transaction);
+        if (Objects.nonNull(transactionDTO)) {
+            boolean success = saveTransaction(transactionDTO);
+            if (success) {
+                dealRpcReturnData(transactionDTO);
+            }
+        }
+        return transactionDTO;
     }
 
     private Long getBeginBlockNum(Long dbMaxBlockNum){

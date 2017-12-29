@@ -1,7 +1,11 @@
 package com.achain.blockchain.game.controller;
 
+import com.achain.blockchain.game.conf.Config;
 import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
+import com.achain.blockchain.game.job.TransactionJob;
 import com.achain.blockchain.game.service.IBlockchainService;
+import com.achain.blockchain.game.utils.SDKHttpClient;
+import com.alibaba.fastjson.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +34,12 @@ public class BroadcastController {
 
     @Autowired
     private IBlockchainService blockchainService;
+    @Autowired
+    private TransactionJob transactionJob;
+    @Autowired
+    private SDKHttpClient httpClient;
+    @Autowired
+    private Config config;
 
 
     /**
@@ -94,4 +105,35 @@ public class BroadcastController {
         log.info("query|list={}",list);
         return blockchainService.commonQuery(list);
     }
+
+    /**
+     * 更新没有改变状态的trx
+     */
+    @GetMapping("update/transaction")
+    public void updateTransaction(Long blockNum,String trxId){
+        log.info("updateTransaction|BlockNum={}|orgTrxId={}",blockNum,trxId);
+        try {
+            if(StringUtils.isEmpty(trxId) || Objects.isNull(blockNum)){
+                return;
+            }
+            String result = httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_contract_result", trxId);
+            if(StringUtils.isEmpty(result)){
+                return;
+            }
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            if(Objects.isNull(jsonObject)){
+                return;
+            }
+            String newTrxId = jsonObject.getString("trx_id");
+            if(StringUtils.isEmpty(newTrxId)){
+                return;
+            }
+            log.info("updateTransaction|BlockNum={}|orgTrxId={}|trxId={}",blockNum,trxId,newTrxId);
+            transactionJob.getTransactionDTO(blockNum,trxId);
+        }catch (Exception e){
+            log.error("updateTransaction|BlockNum={}|orgTrxId={}",blockNum,trxId,e);
+        }
+
+    }
+
 }

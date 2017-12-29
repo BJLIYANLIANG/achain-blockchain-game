@@ -1,8 +1,10 @@
 package com.achain.blockchain.game.service.impl;
 
+import com.achain.blockchain.game.domain.entity.BlockchainDogOrder;
 import com.achain.blockchain.game.domain.entity.BlockchainRecord;
 import com.achain.blockchain.game.mapper.BlockchainRecordMapper;
 import com.achain.blockchain.game.service.IBlockchainRecordService;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import org.springframework.stereotype.Service;
@@ -15,5 +17,10 @@ import org.springframework.stereotype.Service;
 public class BlockchainRecordServiceImpl extends ServiceImpl<BlockchainRecordMapper, BlockchainRecord>
     implements IBlockchainRecordService {
 
-
+    @Override
+    public Integer countByBlockNum(Long blockNum) {
+        EntityWrapper<BlockchainRecord> wrapper = new EntityWrapper<>();
+        wrapper.where("block_num={0}", blockNum);
+        return baseMapper.selectCount(wrapper);
+    }
 }
