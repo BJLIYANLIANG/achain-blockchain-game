@@ -110,10 +110,11 @@ public class BroadcastController {
      * 更新没有改变状态的trx
      */
     @GetMapping("update/transaction")
-    public void updateTransaction(Long blockNum,String trxId){
-        log.info("updateTransaction|BlockNum={}|orgTrxId={}",blockNum,trxId);
+    public void updateTransaction(String trxId){
+        log.info("updateTransaction|orgTrxId={}",trxId);
+        Long blockNum = null;
         try {
-            if(StringUtils.isEmpty(trxId) || Objects.isNull(blockNum)){
+            if(StringUtils.isEmpty(trxId)){
                 return;
             }
             String result = httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_contract_result", trxId);
@@ -125,6 +126,7 @@ public class BroadcastController {
                 return;
             }
             String newTrxId = jsonObject.getString("trx_id");
+            blockNum =Long.parseLong(jsonObject.getString("block_num"));
             if(StringUtils.isEmpty(newTrxId)){
                 return;
             }
