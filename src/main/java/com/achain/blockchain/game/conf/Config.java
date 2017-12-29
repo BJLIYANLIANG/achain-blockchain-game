@@ -39,6 +39,11 @@ public class Config {
     @Value("${encodeRules}")
     public String encodeRules;
 
+    @Value("${broadcast_url}")
+    public String broadcastUrl;
+
+
+
 
     public long headerBlockCount;
 

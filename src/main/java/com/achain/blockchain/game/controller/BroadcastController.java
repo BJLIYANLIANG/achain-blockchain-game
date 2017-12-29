@@ -2,12 +2,17 @@ package com.achain.blockchain.game.controller;
 
 import com.achain.blockchain.game.conf.Config;
 import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
+import com.achain.blockchain.game.domain.dto.TransactionDTO;
+import com.achain.blockchain.game.domain.dto.Wallet2DTO;
+import com.achain.blockchain.game.domain.dto.WalletDTO;
 import com.achain.blockchain.game.job.TransactionJob;
 import com.achain.blockchain.game.service.IBlockchainService;
+import com.achain.blockchain.game.utils.HttpUtils;
 import com.achain.blockchain.game.utils.SDKHttpClient;
 import com.alibaba.fastjson.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SimpleTimeZone;
 
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.spring.web.json.Json;
 
 /**
  * @author yujianjian
@@ -112,28 +121,36 @@ public class BroadcastController {
     @GetMapping("update/transaction")
     public void updateTransaction(String trxId){
         log.info("updateTransaction|orgTrxId={}",trxId);
-        Long blockNum = null;
+        String url = config.broadcastUrl + "?trx_id=" + trxId + "&page=1&per_page=10";
         try {
-            if(StringUtils.isEmpty(trxId)){
+            String result = HttpUtils.get(url);
+            log.info("updateTransaction|result={}",result);
+            WalletDTO walletDTO = JSONObject.parseObject(result, WalletDTO.class);
+            log.info("updateTransaction|walletDTO={}",walletDTO);
+            if(Objects.isNull(walletDTO) || walletDTO.getCode() != 200){
                 return;
             }
-            String result = httpClient.post(config.walletUrl, config.rpcUser, "blockchain_get_contract_result", trxId);
-            if(StringUtils.isEmpty(result)){
+            Wallet2DTO dto = walletDTO.getResult().get(0);
+            if(Objects.isNull(dto)){
                 return;
             }
-            JSONObject jsonObject = JSONObject.parseObject(result);
-            if(Objects.isNull(jsonObject)){
-                return;
-            }
-            String newTrxId = jsonObject.getString("trx_id");
-            blockNum =Long.parseLong(jsonObject.getString("block_num"));
-            if(StringUtils.isEmpty(newTrxId)){
-                return;
-            }
-            log.info("updateTransaction|BlockNum={}|orgTrxId={}|trxId={}",blockNum,trxId,newTrxId);
-            transactionJob.getTransactionDTO(blockNum,trxId);
+            TransactionDTO transactionDTO = new TransactionDTO();
+            transactionDTO.setApiParams(dto.getAbi_params());
+            transactionDTO.setAmount((long)(new Double(dto.getAmount()) * 10000));
+            transactionDTO.setBlockNum(dto.getBlock_num());
+            transactionDTO.setCallAbi(dto.getCalled_abi());
+            transactionDTO.setContractId(dto.getContract_Id());
+            transactionDTO.setEventParam(dto.getEvent_params());
+            transactionDTO.setEventType(dto.getEvent_type());
+            transactionDTO.setTrxId(trxId);
+            SimpleDateFormat smf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date trxTime = smf.parse(dto.getTrx_time());
+            transactionDTO.setTrxTime(trxTime);
+            transactionDTO.setFromAddr(dto.getFrom_addr());
+            transactionJob.update(transactionDTO);
+            log.info("updateTransaction|success|transactionDTO={}",transactionDTO);
         }catch (Exception e){
-            log.error("updateTransaction|BlockNum={}|orgTrxId={}",blockNum,trxId,e);
+            log.error("updateTransaction|orgTrxId={}",trxId,e);
         }
 
     }

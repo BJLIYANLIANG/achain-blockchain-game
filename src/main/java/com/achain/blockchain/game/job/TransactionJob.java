@@ -66,16 +66,20 @@ public class TransactionJob {
         log.info("doTransactionJob|结束|nowHeaderBlockNum={}", config.headerBlockCount);
     }
 
-    public TransactionDTO getTransactionDTO(long blockCount, String transaction) {
+    private TransactionDTO getTransactionDTO(long blockCount, String transaction) {
         TransactionDTO transactionDTO;
         transactionDTO = blockchainService.getTransaction(blockCount, transaction);
+        update(transactionDTO);
+        return transactionDTO;
+    }
+
+    public void update(TransactionDTO transactionDTO) {
         if (Objects.nonNull(transactionDTO)) {
             boolean success = saveTransaction(transactionDTO);
             if (success) {
                 dealRpcReturnData(transactionDTO);
             }
         }
-        return transactionDTO;
     }
 
     private Long getBeginBlockNum(Long dbMaxBlockNum){
