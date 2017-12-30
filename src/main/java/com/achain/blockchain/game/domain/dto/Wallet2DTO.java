@@ -36,4 +36,6 @@ public class Wallet2DTO implements Serializable{
      * 调用参数
      */
     private String abi_params;
+
+    private String coin_type;
 }

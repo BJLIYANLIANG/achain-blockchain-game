@@ -177,14 +177,15 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         if (CryptoDogEventType.CANCEL_AUCTION_SUCCESS.equals(eventType)) {
             int tokenId = Integer.parseInt(eventParam);
             List<BlockchainDogOrder> list =
-                blockchainDogOrderService.listByDogIdAndStatus(tokenId, OrderStatus.ON);
+                blockchainDogOrderService.listCanCancelDog(tokenId);
             if (list.size() == 0) {
+                log.info("cancelAuction|listIsNull|transactionDTO={}",transactionDTO);
                 return;
             }
-            BlockchainDogOrder blockchainDogOrder = list.get(0);
-            blockchainDogOrder.setStatus(OrderStatus.CANCEL.getIntKey());
-            blockchainDogOrderService.updateById(blockchainDogOrder);
-
+            list.forEach(blockchainDogOrder -> {
+                blockchainDogOrder.setStatus(OrderStatus.CANCEL.getIntKey());
+            });
+            blockchainDogOrderService.updateBatchById(list);
             userOrderDTO.setMessage(null);
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }
@@ -261,14 +262,15 @@ public class CryptoDogServiceImpl implements ICryptoDogService {
         if (CryptoDogEventType.CANCEL_MATING_SUCCESS.equals(eventType)) {
             int tokenId = Integer.parseInt(eventParam);
             List<BlockchainDogMetingOrder> list =
-                blockchainDogMetingOrderService.listByDogIdAndStatus(tokenId, OrderStatus.ON);
+                blockchainDogMetingOrderService.listCanCancelDog(tokenId);
             if (list.size() == 0) {
+                log.info("cancelMatingTransaction|listIsNull|transactionDTO={}",transactionDTO);
                 return;
             }
-            BlockchainDogMetingOrder blockchainDogMetingOrder = list.get(0);
-            blockchainDogMetingOrder.setStatus(OrderStatus.CANCEL.getIntKey());
-            blockchainDogMetingOrderService.updateById(blockchainDogMetingOrder);
-
+            list.forEach(blockchainDogMetingOrder -> {
+                blockchainDogMetingOrder.setStatus(OrderStatus.CANCEL.getIntKey());
+            });
+            blockchainDogMetingOrderService.updateBatchById(list);
             userOrderDTO.setMessage(null);
             userOrderDTO.setStatus(OrderStatus.SUCCESS);
         }

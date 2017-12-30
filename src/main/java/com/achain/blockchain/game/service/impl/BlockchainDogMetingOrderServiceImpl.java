@@ -31,6 +31,14 @@ public class BlockchainDogMetingOrderServiceImpl
     }
 
     @Override
+    public List<BlockchainDogMetingOrder> listCanCancelDog(Integer dogId) {
+        EntityWrapper<BlockchainDogMetingOrder> wrapper = new EntityWrapper<>();
+        wrapper.where("seller_dog_id={0}", dogId).and("status={0}", OrderStatus.ON.getIntKey())
+               .orNew("seller_dog_id={0}", dogId).and("status={0}", OrderStatus.EXPIRE.getIntKey());
+        return baseMapper.selectList(wrapper);
+    }
+
+    @Override
     public List<BlockchainDogMetingOrder> listExpireOrders(Date nowTime) {
         EntityWrapper<BlockchainDogMetingOrder> wrapper = new EntityWrapper<>();
         wrapper.where("status={0}", OrderStatus.ON.getIntKey())

@@ -5,6 +5,7 @@ import com.achain.blockchain.game.domain.dto.OfflineSignDTO;
 import com.achain.blockchain.game.domain.dto.TransactionDTO;
 import com.achain.blockchain.game.domain.dto.Wallet2DTO;
 import com.achain.blockchain.game.domain.dto.WalletDTO;
+import com.achain.blockchain.game.domain.enums.ContractGameMethod;
 import com.achain.blockchain.game.job.TransactionJob;
 import com.achain.blockchain.game.service.IBlockchainService;
 import com.achain.blockchain.game.utils.HttpUtils;
@@ -136,7 +137,11 @@ public class BroadcastController {
             }
             TransactionDTO transactionDTO = new TransactionDTO();
             transactionDTO.setApiParams(dto.getAbi_params());
-            transactionDTO.setAmount((long)(new Double(dto.getAmount()) * 10000));
+            try{
+                transactionDTO.setAmount((long)(new Double(dto.getAmount()) * 10000));
+            }catch (Exception e){
+
+            }
             transactionDTO.setBlockNum(dto.getBlock_num());
             transactionDTO.setCallAbi(dto.getCalled_abi());
             transactionDTO.setContractId(dto.getContract_Id());
@@ -147,6 +152,10 @@ public class BroadcastController {
             Date trxTime = smf.parse(dto.getTrx_time());
             transactionDTO.setTrxTime(trxTime);
             transactionDTO.setFromAddr(dto.getFrom_addr());
+
+            if(StringUtils.isEmpty(transactionDTO.getEventType())){
+                transactionDTO.setCallAbi(ContractGameMethod.RECHARGE.getValue());
+            }
             transactionJob.update(transactionDTO);
             log.info("updateTransaction|success|transactionDTO={}",transactionDTO);
         }catch (Exception e){

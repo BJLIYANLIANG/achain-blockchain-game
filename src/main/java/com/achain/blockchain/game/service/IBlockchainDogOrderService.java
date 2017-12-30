@@ -21,6 +21,8 @@ public interface IBlockchainDogOrderService extends IService<BlockchainDogOrder>
      */
     List<BlockchainDogOrder> listByDogIdAndStatus(Integer dogId,OrderStatus orderStatus);
 
+    List<BlockchainDogOrder>  listCanCancelDog(Integer dogId);
+
     /**
      * 获取失效的单子,更改状态
      * @param nowTime 当前时间
