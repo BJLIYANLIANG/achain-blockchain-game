@@ -70,4 +70,53 @@ public class InterfaceTest {
         String result = HttpUtils.get(url);
         return result;
     }
+
+
+    /**
+     * 合约币转账方法
+     * @param address 接收方act地址
+     * @param amount　对应币种数量
+     * @param privateKey　发送者私钥(解密的)
+     * @param contractId 对应合约币的id
+     * @return 签名后的对象,trx.toJSONString()进行广播即可
+     */
+    private Transaction getTransaction(String address, String amount,String privateKey,String contractId) {
+        Transaction trx = null;
+        int index = 0;
+        while (index < 3){
+            try {
+                trx = new Transaction(new ACTPrivateKey(privateKey), contractId, "transfer_to",
+                                      address+"|"+amount, 1000L, true);
+                break;
+            } catch (Exception e) {
+
+            }
+            index++;
+        }
+        return trx;
+    }
+
+
+    /**
+     * act转账方法
+     * @param address 接收方act地址
+     * @param amount　act数量
+     * @return 签名后的对象,trx.toJSONString()进行广播即可
+     */
+    private Transaction getActTransaction(String address, String amount,String privateKey) {
+        Transaction trx = null;
+        long newAmount = (long) (Double.parseDouble(amount) * 100_000);
+        int index = 0;
+        while (index < 3){
+            try {
+                trx = new Transaction(new ACTPrivateKey(privateKey),newAmount,address,"act transfer");
+                break;
+            } catch (Exception e) {
+
+            }
+            index++;
+        }
+        return trx;
+    }
+
 }
